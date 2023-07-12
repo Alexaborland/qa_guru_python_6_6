@@ -5,7 +5,7 @@ from datetime import time
 def test_dark_theme_by_time():
     current_time = time(hour=23)
     # TODO переключите темную тему в зависимости от времени суток (с 22 до 6 часов утра - ночь)
-    if time(hour=6) < current_time >= time(hour=22):
+    if time(hour=6) < current_time <= time(hour=22):
         is_dark_theme = False
     else:
         is_dark_theme = True
@@ -24,10 +24,12 @@ def test_dark_theme_by_time_and_user_choice():
     is_dark_theme = None
     dark_theme_enabled_by_user = True
     if dark_theme_enabled_by_user is None:
-        time(hour=6) < current_time >= time(hour=22)
-        is_dark_theme = False
+        if time(hour=6) < current_time <= time(hour=22):
+            is_dark_theme = False
+        else:
+            is_dark_theme = True
     else:
-        is_dark_theme = True
+        is_dark_theme = dark_theme_enabled_by_user
     # TODO переключите темную тему в зависимости от времени суток,
     #  но учтите что темная тема может быть включена вручную
     assert is_dark_theme is True
@@ -77,7 +79,7 @@ def test_find_suitable_user():
 # "Open Browser [Chrome]"
 
 
-def test_arguments_of_function(func, *args):
+def arguments_of_function(func, *args):
     func_name = func.__name__.replace('_', ' ').title()
     args = ', '.join([*args])
     result = f'{func_name} [{args}]'
@@ -92,17 +94,17 @@ def test_readable_function():
 
 def open_browser(browser_name):
     actual_result = None
-    actual_result = test_arguments_of_function(open_browser, browser_name)
+    actual_result = arguments_of_function(open_browser, browser_name)
     assert actual_result == "Open Browser [Chrome]"
 
 
 def go_to_companyname_homepage(page_url):
     actual_result = None
-    actual_result = test_arguments_of_function(go_to_companyname_homepage, page_url)
+    actual_result = arguments_of_function(go_to_companyname_homepage, page_url)
     assert actual_result == "Go To Companyname Homepage [https://companyname.com]"
 
 
 def find_registration_button_on_login_page(page_url, button_text):
     actual_result = None
-    actual_result = test_arguments_of_function(find_registration_button_on_login_page, page_url, button_text)
+    actual_result = arguments_of_function(find_registration_button_on_login_page, page_url, button_text)
     assert actual_result == "Find Registration Button On Login Page [https://companyname.com/login, Register]"
